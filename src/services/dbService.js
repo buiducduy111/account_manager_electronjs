@@ -4,7 +4,7 @@ const ENCRYPT_KEY = 'giaiphapmmo.net';
 const knex = require('knex')({
     client: 'sqlite3',
     connection: {
-      filename: '../../database_test.db'
+      filename: 'database_test.db'
     },
     useNullAsDefault: false
 });
@@ -38,8 +38,8 @@ export const addAccount = async (accountObj) => {
     return await knex('accounts').insert(accountObj, ['id', 'username', 'password', 'more_info', 'website_id']);
 }
 
-export const getAccounts = async () => {
-    return await knex('accounts').select().orderBy('username');
+export const getAccounts = async (websiteId) => {
+    return await knex('accounts').where('website_id', websiteId).select().orderBy('username');
 }
 
 export const updateAccount = async (accountObj) => {
