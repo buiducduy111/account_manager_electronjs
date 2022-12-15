@@ -1,9 +1,10 @@
 import { ipcMain } from 'electron'
 import * as dbService from './dbService'
+import {getIcon} from './automationService'
 
 export async function ipcMainHandle() {
-    ipcMain.handle('get-websites', async () => {
-        return await dbService.getWebsites();
+    ipcMain.handle('get-websites', async (event, search = '') => {
+        return await dbService.getWebsites(search);
     }),
     ipcMain.handle('add-website', async (event, websiteObjAsJson) => {
         console.log(websiteObjAsJson);
@@ -38,5 +39,9 @@ export async function ipcMainHandle() {
     }),
     ipcMain.handle('set-pin', async (event, pin) => {
         return await dbService.setPin(pin);
+    })
+
+    ipcMain.handle('get-icon', async (event, url) => {
+        return await getIcon(url);
     })
 }

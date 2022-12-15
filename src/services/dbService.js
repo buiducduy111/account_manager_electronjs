@@ -25,10 +25,10 @@ export const updateWebsite = async (websiteObj) => {
 export const delWebsite = async (id) => {
     const temp = await knex('accounts').where('website_id', id).count();
     const accountNum = temp[0]['count(*)'];
-    
-    if (accountNum == 0)
+
+    if (accountNum > 0)
         return false;
-    
+      
     const delRows = await knex('websites').where('id', id).del();
     return delRows > 0;
 }
@@ -63,7 +63,7 @@ export const getPin = async () => {
     
     const pin = pins[0]['value'];
     const rawPin = cryptoJs.AES.decrypt(pin, ENCRYPT_KEY).toString(cryptoJs.enc.Utf8);
-    console.log(rawPin);
+
     return rawPin
 }
 
