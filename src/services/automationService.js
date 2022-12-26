@@ -1,5 +1,3 @@
-import { dialog, app } from 'electron';
-
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
@@ -14,40 +12,46 @@ export const getIcon = async (websiteUrl) => {
         await fs.mkdirSync(DOWNLOAD_PATH);
 
     // Get icon url
-    let options = {headless: false};
+    let options = {headless: true};
 
     // If production
     if(__dirname.includes('resources')) {
         options = {
-            headless: false,
+            headless: true,
             executablePath: __dirname.replace('app.asar', 'node_modules/puppeteer/.local-chromium/win64-1045629/chrome-win/chrome.exe')
         }
     }
-    const browser = await puppeteer.launch(options);
-    const page = await browser.newPage();
-
-    await page.setRequestInterception(true);
-    page.on('request', (req) => {
-        if(req.resourceType() === 'image'){
-            req.abort();
-        }
-        else {
-            req.continue();
-        }
-    });
-
-    await page.goto(websiteUrl);
-
+    let iconUrl = '';
     const urlObj = new URL(websiteUrl);
-    let iconUrl = await page.$eval("link[rel='icon'],link[rel='shortcut icon']", el => el.href);
-    await browser.close();
 
-    if (iconUrl == undefined)
-        return undefined;
+    try {
+        const browser = await puppeteer.launch(options);
+        const page = await browser.newPage();
 
-    if (!iconUrl.includes('http')){
-        iconUrl = urlObj.origin + iconUrl;
-    }
+        await page.setRequestInterception(true);
+        page.on('request', (req) => {
+            if(req.resourceType() === 'image'){
+                req.abort();
+            }
+            else {
+                req.continue();
+            }
+        });
+
+        await page.goto(websiteUrl);
+
+        let iconUrl = await page.$eval("link[rel='icon'],link[rel='shortcut icon']", el => el.href);
+        await browser.close();
+
+        if (iconUrl == undefined)
+            return undefined;
+
+        if (!iconUrl.includes('http')){
+            iconUrl = urlObj.origin + iconUrl;
+        }
+        
+    // eslint-disable-next-line no-empty
+    } catch {}
     
     // Download icon url
     try {
