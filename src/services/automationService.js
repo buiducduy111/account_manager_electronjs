@@ -40,7 +40,7 @@ export const getIcon = async (websiteUrl) => {
 
         await page.goto(websiteUrl);
 
-        let iconUrl = await page.$eval("link[rel='icon'],link[rel='shortcut icon']", el => el.href);
+        iconUrl = await page.$eval("link[rel='icon'],link[rel='shortcut icon']", el => el.href);
         await browser.close();
 
         if (iconUrl == undefined)
@@ -52,7 +52,8 @@ export const getIcon = async (websiteUrl) => {
         
     // eslint-disable-next-line no-empty
     } catch {}
-    
+    console.log('Icon: '+ iconUrl);
+
     // Download icon url
     try {
         const desFilenName = urlObj.hostname+'.png';
