@@ -10,7 +10,7 @@
                 <input class="form-control" type="password" v-model="pin"/>
                 <router-link to="/change-pin" class="a-btn">Change your PIN</router-link>
                 <br/><br/>
-                <small style="color: #7A7A7A">If you want to auto update password from via chrome to this app. Install our extensions (Load unpacked) at <b>resources/assets/chrome-extension</b></small>
+                <small style="color: #7A7A7A">If you want to auto update password from via chrome to this app, install our extensions (Load unpacked) at <b>resources/app-extension</b></small>
             </div>
             <div class="login-container__loading" v-if="loginSuccess">
                 <div class="spinner-border text-primary" role="status">

@@ -13,8 +13,8 @@ module.exports = defineConfig({
         },
         extraResources: [
           {
-            from: './public/extensions',
-            to: 'extensions'
+            from: './public/app-extension',
+            to: 'app-extension'
           }
         ]
       },
