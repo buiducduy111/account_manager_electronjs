@@ -15,6 +15,10 @@ module.exports = defineConfig({
           {
             from: './public/app-extension',
             to: 'app-extension'
+          },
+          {
+            from: 'node_modules/puppeteer',
+            to: 'node_modules/puppeteer'
           }
         ]
       },

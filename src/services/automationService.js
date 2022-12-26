@@ -1,3 +1,5 @@
+import { dialog, app } from 'electron';
+
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +14,16 @@ export const getIcon = async (websiteUrl) => {
         await fs.mkdirSync(DOWNLOAD_PATH);
 
     // Get icon url
-    const browser = await puppeteer.launch({headless: true});
+    let options = {headless: false};
+
+    // If production
+    if(__dirname.includes('resources')) {
+        options = {
+            headless: false,
+            executablePath: __dirname.replace('app.asar', 'node_modules/puppeteer/.local-chromium/win64-1045629/chrome-win/chrome.exe')
+        }
+    }
+    const browser = await puppeteer.launch(options);
     const page = await browser.newPage();
 
     await page.setRequestInterception(true);
