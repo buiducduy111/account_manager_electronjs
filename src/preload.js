@@ -18,3 +18,15 @@ contextBridge.exposeInMainWorld('database', {
 contextBridge.exposeInMainWorld('automation', {
     getIcon: (url) => ipcRenderer.invoke('get-icon', url)
 })
+
+contextBridge.exposeInMainWorld('system', {
+    showConfirm: (message) => ipcRenderer.invoke('show-confirm', message),
+    showMsg: (message) => ipcRenderer.invoke('show-msg', message),
+    showOpenDialog: (title) => ipcRenderer.invoke('open-folder-dialog', title),
+})
+
+contextBridge.exposeInMainWorld('setting', {
+    setDataLocation: (saveLocation) => ipcRenderer.invoke('set-data-location', saveLocation),
+    checkDatabase: () => ipcRenderer.invoke('check-database'),
+    initDatabase: () => ipcRenderer.invoke('init-database'),
+})

@@ -1,0 +1,35 @@
+{
+    "manifest_version": 3,
+    "name": "Account manager autofill",
+    "version": "1.0.0",
+    "description": "Auto-fill for Account manager app",
+    "icons": {
+        "16": "images/icon-16x16.png",
+        "32": "images/icon-32x32.png",
+        "48": "images/icon-48x48.png"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "images/icon-48x48.png"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+          "js": [
+            "content.js"
+          ],
+          "run_at": "document_start",
+          "matches": [
+            "https://*/*",
+            "http://*/*"
+          ]
+        }
+    ],
+    "permissions": [
+        "tabs",
+        "<all_urls>"
+    ],
+    "author": "buiducduy111@gmail.com"
+  }

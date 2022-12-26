@@ -1,30 +1,55 @@
 <template>
     <div class="container">
-        <h1>Edit website</h1>
+        <form @submit="updateWebsiteToDatabase">
+            <h1>Edit website</h1>
+            <hr/>
+            <label>Website URL</label>
+            <div class="check-container">
+                <a id="checkBtn" @click="checkWebsite">Check</a>
+                <div class="spinner-grow spinner-grow-sm text-primary" role="status" v-show="isOnCheckingWebsite">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <input class="form-control" placeholder="Website url" v-model="website.url" />
+            
+            <br/>
+            <label>Name on list</label>
+            <input class="form-control" placeholder="Name on list" v-model="website.name"/>
+            <br/>
 
-        <input class="form-control" placeholder="Website url" v-model="website.url" />
-        <a @click="checkWebsite">Check</a>
+            <label>Icon path or url</label>
+            <input class="form-control" placeholder="Icon" v-model="website.icon"/>
+            <br/>
+            <button type="submit" class="btn btn-primary">Update</button>
 
-        <input class="form-control" placeholder="Name on list" v-model="website.name"/>
-        <input class="form-control" placeholder="Icon" v-model="website.icon"/>
-        <br/>
-        <button class="btn btn-primary" @click="updateWebsiteToDatabase">Update</button>
+            <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
+        </form>
+        
     </div>
 </template>
 
 <script>
+/* eslint-disable */ 
 export default {
     name: 'AddWebsite',
     data(){
         return {
-            website: {}
+            website: {},
+            isOnCheckingWebsite: false
         }
     },
     methods: {
         async checkWebsite(){
-            this.website.icon = await window.automation.getIcon(this.website.url);
-            const urlObj = new URL(this.website.url);
-            this.website.name = urlObj.hostname;
+            this.isOnCheckingWebsite = true;
+            try {
+                this.website.icon = await window.automation.getIcon(this.website.url);
+                const urlObj = new URL(this.website.url);
+                this.website.name = urlObj.hostname;
+            } catch {
+
+            }
+            
+            this.isOnCheckingWebsite = false;
         },
         updateWebsiteObj(website){
             this.website = website;
@@ -35,9 +60,12 @@ export default {
                 await window.database.updateWebsite(JSON.stringify(this.website));
                 this.$emit('close');
             } catch {
-                alert('Website is existed');
+                window.system.showMsg('Unknow error! Please try again');
                 this.$emit('close');
             }
+        },
+        closeModal(){
+            this.$emit('close');
         }
     }
 }
@@ -46,5 +74,42 @@ export default {
 <style scoped>
 .container {
     background: white;
+    max-width: 700px;
+    margin: 50px auto;
+    border-radius: 10px;
+    border: 1px solid #CECECE;
+    padding: 15px;
+    position: relative;
+}
+
+h1 {
+    font-size: 23px;
+}
+
+textarea {
+    height: 200px;
+}
+
+.btn-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+#checkBtn {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #009FEC;
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.check-container {
+    display: inline-block;
+    margin-left: 10px;
 }
 </style>

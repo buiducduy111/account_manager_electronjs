@@ -1,9 +1,10 @@
 'use strict'
 
+import { faL } from '@fortawesome/free-solid-svg-icons'
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import {ipcMainHandle} from './services/ipcService'
-import * as dbService from './services/dbService'
+import { startLocalServer } from './services/localServer'
 
 const path = require('path')
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -18,12 +19,18 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 700,
+    title: 'Account manager',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: false,
+      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      devTools: true,
+      webSecurity: false
     }
   })
+
+  win.maximize();
+  win.setMenuBarVisibility(false);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -35,6 +42,8 @@ async function createWindow() {
     win.loadURL('app://./index.html')
   }
 }
+
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -56,6 +65,7 @@ app.on('activate', () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   await ipcMainHandle();
+  await startLocalServer();
   createWindow()
 })
 

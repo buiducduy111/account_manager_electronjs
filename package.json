@@ -1,7 +1,12 @@
 {
   "name": "account_manager",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "Account manager app",
+  "author": {
+    "email": "buiducduy111@gmail.com",
+    "name": "Duy Bui"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -13,9 +18,15 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-brands-svg-icons": "^6.2.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/vue-fontawesome": "^3.0.2",
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
     "crypto-js": "^4.1.1",
+    "image-to-base64": "^2.2.0",
     "knex": "^2.3.0",
     "puppeteer": "^18.1.0",
     "sqlite3": "^5.1.4",

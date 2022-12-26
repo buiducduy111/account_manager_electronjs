@@ -1,0 +1,38 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    min-width: 400px;
+}
+
+#app {
+    border: 1px solid #E1E1E1;
+    padding: 15px;
+}
+
+label {
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+    color: #464646 !important;
+}
+
+input {
+    margin-bottom: 10px !important;
+    font-size: 14px !important;
+}
+
+.btn {
+    font-size: 14px !important;
+}
+
+.btn-primary {
+    background: #009FEC !important;
+    border: 1px solid #009FEC;
+}
+
+.btn-primary:hover {
+    background: #4AC5FF !important;
+    border: 1px solid #4AC5FF;
+}

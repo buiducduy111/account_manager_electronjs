@@ -1,11 +1,13 @@
 const puppeteer = require('puppeteer');
-const https = require('https');
 const fs = require('fs');
 const path = require('path');
-
-const DOWNLOAD_PATH = path.join(__dirname, 'icons');
+const https = require('https');
+const settingService = require('./settingService');
 
 export const getIcon = async (websiteUrl) => {
+    const saveLocation = await settingService.getDataLocation();
+    const DOWNLOAD_PATH = path.join(saveLocation, 'icons');
+
     if (!await fs.existsSync(DOWNLOAD_PATH))
         await fs.mkdirSync(DOWNLOAD_PATH);
 
@@ -36,27 +38,31 @@ export const getIcon = async (websiteUrl) => {
         iconUrl = urlObj.origin + iconUrl;
     }
     
-    console.log(iconUrl);
     // Download icon url
-    const desFileLocation = DOWNLOAD_PATH+'\\'+urlObj.hostname+'.png';
+    try {
+        const desFilenName = urlObj.hostname+'.png';
+        const desFileLocation = DOWNLOAD_PATH+'\\'+desFilenName;
 
-    await new Promise((resolve) => {
-        const file = fs.createWriteStream(desFileLocation);
-        const options = {
-            headers: {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-            }
-        };
-        https.get(iconUrl, options, function(response) {
-            response.pipe(file);
+        await new Promise((resolve) => {
+            const file = fs.createWriteStream(desFileLocation);
+            const options = {
+                headers: {
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+                }
+            };
+            https.get(iconUrl, options, function(response) {
+                response.pipe(file);
 
-            file.on("finish", () => {
-                file.close();
-                console.log('Download icon completed');
-                return resolve(desFileLocation);
+                file.on("finish", () => {
+                    file.close();
+                    console.log('Download icon completed');
+                    return resolve(desFilenName);
+                });
             });
         });
-    });
-    
-    return desFileLocation;
+        
+        return desFilenName;
+    } catch {
+        return iconUrl;
+    }  
 };
