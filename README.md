@@ -18,3 +18,13 @@ npm run electron:serve
 ```
 npm run electron:build
 ```
+
+## Donate
+Paypal: 
+buiducduy111@gmail.com
+
+VN-BIDV: 
+22210000545641
+
+VN-VIETCOMBANK:
+0951004190262
