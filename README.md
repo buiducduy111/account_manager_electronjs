@@ -19,7 +19,8 @@ npm run electron:serve
 npm run electron:build
 ```
 
-## Donate
+### Donate
+```
 Paypal: 
 buiducduy111@gmail.com
 
@@ -28,3 +29,4 @@ VN-BIDV:
 
 VN-VIETCOMBANK:
 0951004190262
+```
